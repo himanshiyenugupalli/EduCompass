@@ -89,9 +89,7 @@
 
     setLoggedInUser(email);
     alert(`Login successful! Welcome back, ${user.name}!\n\nYou will now be redirected to the college catalogue.`);
-    
-    // In a real application, you would redirect to the catalogue page
-    // window.location.href = 'catalogue.html';
+    window.location.href = 'catalogue.html';
   });
 
   // Check if user is already logged in
@@ -102,7 +100,7 @@
       const user = users[loggedInUser];
       if (user) {
         alert(`Welcome back, ${user.name}! You are already logged in.\n\nRedirecting to college catalogue...`);
-        // window.location.href = 'catalogue.html';
+        window.location.href = 'catalogue.html';
       } else {
         clearLoggedInUser();
       }

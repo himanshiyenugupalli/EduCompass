@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EduCompass - Discover Colleges in India</title>
+<link rel="stylesheet" href="../css/styles.css" />
+<link rel="stylesheet" href="../css/catalogue.css" />
+</head>
+<body>
+<header>
+  <h1>EduCompass</h1>
+  <p>Your trusted platform to discover IT & Management colleges in India</p>
+</header>
+<main>
+  <section aria-label="Search Colleges">
+    <div class="search-container">
+      <input type="text" id="searchName" placeholder="Search by college name" aria-label="Search by college name" />
+      <input type="text" id="searchCity" placeholder="Search by city" aria-label="Search by city" />
+      <select id="filterCourse" aria-label="Filter by course offered">
+        <option value="">All Courses</option>
+      </select>
+    </div>
+    <ul class="college-list" id="collegeList" aria-live="polite" aria-relevant="additions"></ul>
+  </section>
+</main>
+<footer>
+  &copy; 2024 EduCompass. Data is regularly updated for accuracy.
+</footer>
+
+<script src="../js/catalogue.js"></script>
+</body>
+</html>

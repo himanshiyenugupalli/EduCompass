@@ -1,0 +1,88 @@
+/* Catalogue page overrides and unique styles */
+
+/* Override shared main card layout for catalogue page */
+main {
+  flex: 1;
+  max-width: 900px;
+  margin: 1.5rem auto;
+  padding: 0 1rem;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  display: block;
+}
+
+.search-container {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.search-container input,
+.search-container select {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 5px;
+  flex: 1 1 200px;
+  max-width: 300px;
+  transition: border-color 0.3s ease;
+}
+
+.search-container input:focus,
+.search-container select:focus {
+  border-color: #004aad;
+  outline: none;
+}
+
+.college-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.college-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.college-card:hover {
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+}
+
+.college-name {
+  font-weight: 700;
+  font-size: 1.25rem;
+  margin: 0 0 0.25rem 0;
+  color: #004aad;
+}
+
+.college-info {
+  font-size: 0.9rem;
+  margin: 0.15rem 0;
+}
+
+.courses-list {
+  margin: 0.5rem 0 0 0;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-container input,
+  .search-container select {
+    max-width: 100%;
+  }
+}
+
+
