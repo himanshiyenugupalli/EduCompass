@@ -14,16 +14,16 @@
   <button class="menu-toggle" id="menuToggle" aria-label="Open navigation menu" aria-controls="catalogueNav" aria-expanded="false">☰</button>
   <nav id="catalogueNav" class="nav-menu" aria-label="Primary Navigation">
     <ul>
-      <li><a href="#">Profile</a></li>
-      <li><a href="catalogue.html" aria-current="page">Catalogue</a></li>
-      <li><a href="#">Saved</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="#">Help</a></li>
+      <li><a href="#" data-view="profile">Profile</a></li>
+      <li><a href="#" data-view="catalogue" aria-current="page">Catalogue</a></li>
+      <li><a href="#" data-view="saved">Saved</a></li>
+      <li><a href="#" data-view="settings">Settings</a></li>
+      <li><a href="#" data-view="help">Help</a></li>
     </ul>
   </nav>
 </header>
 <main>
-  <section aria-label="Search Colleges">
+  <section id="view-catalogue" aria-label="Search Colleges">
     <div class="search-container">
       <input type="text" id="searchName" placeholder="Search by college name" aria-label="Search by college name" />
       <input type="text" id="searchCity" placeholder="Search by city" aria-label="Search by city" />
@@ -32,6 +32,22 @@
       </select>
     </div>
     <ul class="college-list" id="collegeList" aria-live="polite" aria-relevant="additions"></ul>
+  </section>
+  <section id="view-saved" aria-label="Saved Colleges" style="display:none">
+    <h2 class="section-title">Saved Colleges</h2>
+    <ul class="college-list" id="savedList" aria-live="polite" aria-relevant="additions"></ul>
+  </section>
+  <section id="view-profile" aria-label="Profile" style="display:none">
+    <h2 class="section-title">Profile</h2>
+    <p>Profile details will appear here.</p>
+  </section>
+  <section id="view-settings" aria-label="Settings" style="display:none">
+    <h2 class="section-title">Settings</h2>
+    <p>Settings will appear here.</p>
+  </section>
+  <section id="view-help" aria-label="Help" style="display:none">
+    <h2 class="section-title">Help</h2>
+    <p>Need assistance? Contact support or check FAQs.</p>
   </section>
 </main>
 <footer>

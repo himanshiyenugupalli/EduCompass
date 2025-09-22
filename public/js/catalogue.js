@@ -48,6 +48,30 @@ const colleges = [
     city: "Ghaziabad",
     contact: "+91 120 306 4600",
     courses: ["Management", "IT", "Business Analytics"]
+  },
+  {
+    name: "Indian Institute of Technology Bombay",
+    city: "Mumbai",
+    contact: "+91 22 2572 2545",
+    courses: ["IT", "Computer Science", "Management"]
+  },
+  {
+    name: "Indian School of Business",
+    city: "Hyderabad",
+    contact: "+91 40 2318 7700",
+    courses: ["Management", "Business Analytics"]
+  },
+  {
+    name: "SP Jain Institute of Management and Research",
+    city: "Mumbai",
+    contact: "+91 22 2623 7454",
+    courses: ["Management", "Finance", "Marketing"]
+  },
+  {
+    name: "Jamnalal Bajaj Institute of Management Studies",
+    city: "Mumbai",
+    contact: "+91 22 2202 4133",
+    courses: ["Management", "Human Resource Management"]
   }
 ];
 
@@ -78,6 +102,33 @@ function populateCourseFilter() {
 }
 
 // Render colleges list based on filtered data
+const SAVED_KEY = 'educompass_saved_colleges';
+
+function loadSaved() {
+  const raw = localStorage.getItem(SAVED_KEY);
+  return raw ? JSON.parse(raw) : [];
+}
+
+function saveSaved(list) {
+  localStorage.setItem(SAVED_KEY, JSON.stringify(list));
+}
+
+function isSaved(collegeName) {
+  const saved = loadSaved();
+  return saved.includes(collegeName);
+}
+
+function toggleSave(collegeName) {
+  const saved = loadSaved();
+  const idx = saved.indexOf(collegeName);
+  if (idx >= 0) {
+    saved.splice(idx, 1);
+  } else {
+    saved.push(collegeName);
+  }
+  saveSaved(saved);
+}
+
 function renderColleges(data) {
   collegeListEl.innerHTML = '';
   if (data.length === 0) {
@@ -89,12 +140,23 @@ function renderColleges(data) {
     li.className = 'college-card';
     li.innerHTML = `
       <h2 class="college-name">${college.name}</h2>
+      <button class="save-btn" aria-label="Save ${college.name}" data-college="${college.name}">${isSaved(college.name) ? '✓' : '★'}</button>
       <p class="college-info"><strong>City:</strong> ${college.city}</p>
       <p class="college-info"><strong>Contact:</strong> <a href="tel:${college.contact.replace(/\s+/g, '')}">${college.contact}</a></p>
       <p class="college-info"><strong>Courses Offered:</strong></p>
       <ul class="courses-list">${college.courses.map(c => `<li>${c}</li>`).join('')}</ul>
     `;
     collegeListEl.appendChild(li);
+  });
+
+  // Attach save handlers
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const name = e.currentTarget.getAttribute('data-college');
+      toggleSave(name);
+      // Re-render to reflect state
+      filterColleges();
+    });
   });
 }
 
@@ -159,9 +221,76 @@ function setupMenuToggle() {
 function initCataloguePage() {
   initCatalogue();
   setupMenuToggle();
+  setupViewRouting();
 }
 
 // Run init on page load
 window.addEventListener('DOMContentLoaded', initCataloguePage);
+
+// Views and routing
+function setupViewRouting() {
+  const nav = document.getElementById('catalogueNav');
+  if (!nav) return;
+  nav.addEventListener('click', function(e) {
+    const link = e.target.closest('a[data-view]');
+    if (!link) return;
+    e.preventDefault();
+    const view = link.getAttribute('data-view');
+    showView(view);
+  });
+}
+
+function showView(view) {
+  const mapping = {
+    catalogue: 'view-catalogue',
+    saved: 'view-saved',
+    profile: 'view-profile',
+    settings: 'view-settings',
+    help: 'view-help'
+  };
+  Object.values(mapping).forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = 'none';
+  });
+  const targetId = mapping[view] || mapping.catalogue;
+  const target = document.getElementById(targetId);
+  if (target) target.style.display = '';
+  if (view === 'saved') {
+    renderSaved();
+  }
+}
+
+function renderSaved() {
+  const savedListEl = document.getElementById('savedList');
+  if (!savedListEl) return;
+  const savedNames = loadSaved();
+  const savedColleges = colleges.filter(c => savedNames.includes(c.name));
+  savedListEl.innerHTML = '';
+  if (savedColleges.length === 0) {
+    savedListEl.innerHTML = '<li>No saved colleges yet.</li>';
+    return;
+  }
+  savedColleges.forEach(college => {
+    const li = document.createElement('li');
+    li.className = 'college-card';
+    li.innerHTML = `
+      <h2 class="college-name">${college.name}</h2>
+      <button class="save-btn saved" aria-label="Unsave ${college.name}" data-college="${college.name}">✓</button>
+      <p class="college-info"><strong>City:</strong> ${college.city}</p>
+      <p class="college-info"><strong>Contact:</strong> <a href="tel:${college.contact.replace(/\s+/g, '')}">${college.contact}</a></p>
+      <p class="college-info"><strong>Courses Offered:</strong></p>
+      <ul class="courses-list">${college.courses.map(c => `<li>${c}</li>`).join('')}</ul>
+    `;
+    savedListEl.appendChild(li);
+  });
+
+  savedListEl.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const name = e.currentTarget.getAttribute('data-college');
+      toggleSave(name);
+      renderSaved();
+    });
+  });
+}
 
 

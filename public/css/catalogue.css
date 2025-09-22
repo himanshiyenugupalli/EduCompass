@@ -128,6 +128,7 @@ header {
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
   transition: box-shadow 0.3s ease;
+  position: relative;
 }
 
 .college-card:hover {
@@ -140,6 +141,27 @@ header {
   margin: 0 0 0.25rem 0;
   color: #004aad;
 }
+
+.save-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f3f6ff;
+  color: #004aad;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.save-btn:hover { background: #e6eeff; }
+.save-btn.saved { background: #e8f5e9; color: #2e7d32; }
+
+.section-title { color: #004aad; margin: 0 0 0.5rem 0; }
 
 .college-info {
   font-size: 0.9rem;
