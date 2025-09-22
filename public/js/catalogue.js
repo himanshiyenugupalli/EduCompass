@@ -124,7 +124,44 @@ function initCatalogue() {
   filterCourseEl.addEventListener('change', filterColleges);
 }
 
+// Menu toggle logic
+function setupMenuToggle() {
+  const toggleButton = document.getElementById('menuToggle');
+  const navMenu = document.getElementById('catalogueNav');
+  if (!toggleButton || !navMenu) return;
+
+  function closeMenuOnOutsideClick(event) {
+    if (!navMenu.contains(event.target) && event.target !== toggleButton) {
+      navMenu.classList.remove('open');
+      toggleButton.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', closeMenuOnOutsideClick);
+    }
+  }
+
+  toggleButton.addEventListener('click', function() {
+    const isOpen = navMenu.classList.toggle('open');
+    toggleButton.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) {
+      setTimeout(() => document.addEventListener('click', closeMenuOnOutsideClick), 0);
+    }
+  });
+
+  // Close the menu when a link is clicked
+  navMenu.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') {
+      navMenu.classList.remove('open');
+      toggleButton.setAttribute('aria-expanded', 'false');
+      document.removeEventListener('click', closeMenuOnOutsideClick);
+    }
+  });
+}
+
+function initCataloguePage() {
+  initCatalogue();
+  setupMenuToggle();
+}
+
 // Run init on page load
-window.addEventListener('DOMContentLoaded', initCatalogue);
+window.addEventListener('DOMContentLoaded', initCataloguePage);
 
 
