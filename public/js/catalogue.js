@@ -255,8 +255,12 @@ function showView(view) {
   const targetId = mapping[view] || mapping.catalogue;
   const target = document.getElementById(targetId);
   if (target) target.style.display = '';
+  
   if (view === 'saved') {
     renderSaved();
+  } else if (view === 'help') {
+    // Initialize FAQ functionality when help view is shown
+    setTimeout(setupFAQ, 50); // Small delay to ensure DOM is ready
   }
 }
 
@@ -289,6 +293,28 @@ function renderSaved() {
       const name = e.currentTarget.getAttribute('data-college');
       toggleSave(name);
       renderSaved();
+    });
+  });
+}
+
+// FAQ functionality
+function setupFAQ() {
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  
+  faqQuestions.forEach(question => {
+    question.addEventListener('click', function() {
+      const faqItem = this.parentElement;
+      const isActive = faqItem.classList.contains('active');
+      
+      // Close all FAQ items
+      document.querySelectorAll('.faq-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // If this item wasn't active, open it
+      if (!isActive) {
+        faqItem.classList.add('active');
+      }
     });
   });
 }
