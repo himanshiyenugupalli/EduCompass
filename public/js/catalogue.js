@@ -319,4 +319,250 @@ function setupFAQ() {
   });
 }
 
+// Profile Management Functions
+let editingFields = new Set();
+let originalValues = {};
+
+// Toggle edit mode for a field
+function toggleEdit(fieldId) {
+  const input = document.getElementById(fieldId);
+  const editBtn = input.parentElement.querySelector('.edit-btn');
+  const saveBtn = document.getElementById('saveChanges');
+  const cancelBtn = document.getElementById('cancelChanges');
+  
+  if (input.readOnly) {
+    // Enter edit mode
+    originalValues[fieldId] = input.value;
+    input.readOnly = false;
+    input.focus();
+    editBtn.innerHTML = '<span class="edit-icon">✓</span>';
+    editBtn.classList.add('editing');
+    editBtn.setAttribute('aria-label', 'Confirm edit');
+    editingFields.add(fieldId);
+    
+    // Show action buttons
+    saveBtn.style.display = 'inline-block';
+    cancelBtn.style.display = 'inline-block';
+  } else {
+    // Confirm single field edit
+    input.readOnly = true;
+    editBtn.innerHTML = '<span class="edit-icon">✏️</span>';
+    editBtn.classList.remove('editing');
+    editBtn.setAttribute('aria-label', 'Edit ' + fieldId.replace('profile', '').toLowerCase());
+    editingFields.delete(fieldId);
+    delete originalValues[fieldId];
+    
+    // Hide action buttons if no fields are being edited
+    if (editingFields.size === 0) {
+      saveBtn.style.display = 'none';
+      cancelBtn.style.display = 'none';
+    }
+    
+    // Show success message for single field update
+    showNotification('Field updated successfully!', 'success');
+  }
+}
+
+// Save all profile changes
+function saveProfileChanges() {
+  const form = document.getElementById('profileForm');
+  const formData = new FormData(form);
+  
+  // Simulate API call to save profile data
+  // In a real application, this would send data to your backend
+  console.log('Saving profile data:', Object.fromEntries(formData));
+  
+  // Reset all editing fields
+  editingFields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    const editBtn = input.parentElement.querySelector('.edit-btn');
+    
+    input.readOnly = true;
+    editBtn.innerHTML = '<span class="edit-icon">✏️</span>';
+    editBtn.classList.remove('editing');
+    editBtn.setAttribute('aria-label', 'Edit ' + fieldId.replace('profile', '').toLowerCase());
+  });
+  
+  editingFields.clear();
+  originalValues = {};
+  
+  // Hide action buttons
+  document.getElementById('saveChanges').style.display = 'none';
+  document.getElementById('cancelChanges').style.display = 'none';
+  
+  // Show success message
+  showNotification('Profile updated successfully!', 'success');
+}
+
+// Cancel profile edit
+function cancelProfileEdit() {
+  // Restore original values
+  editingFields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    const editBtn = input.parentElement.querySelector('.edit-btn');
+    
+    input.value = originalValues[fieldId];
+    input.readOnly = true;
+    editBtn.innerHTML = '<span class="edit-icon">✏️</span>';
+    editBtn.classList.remove('editing');
+    editBtn.setAttribute('aria-label', 'Edit ' + fieldId.replace('profile', '').toLowerCase());
+  });
+  
+  editingFields.clear();
+  originalValues = {};
+  
+  // Hide action buttons
+  document.getElementById('saveChanges').style.display = 'none';
+  document.getElementById('cancelChanges').style.display = 'none';
+  
+  showNotification('Changes cancelled', 'info');
+}
+
+// Handle profile image upload
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  // Validate file type
+  if (!file.type.startsWith('image/')) {
+    showNotification('Please select a valid image file', 'error');
+    return;
+  }
+  
+  // Validate file size (max 5MB)
+  if (file.size > 5 * 1024 * 1024) {
+    showNotification('Image size should be less than 5MB', 'error');
+    return;
+  }
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const profileImage = document.getElementById('profileImage');
+    const removeBtn = document.getElementById('removeImageBtn');
+    
+    profileImage.src = e.target.result;
+    removeBtn.style.display = 'inline-block';
+    
+    showNotification('Profile image updated!', 'success');
+  };
+  
+  reader.readAsDataURL(file);
+}
+
+// Remove profile image
+function removeProfileImage() {
+  const profileImage = document.getElementById('profileImage');
+  const removeBtn = document.getElementById('removeImageBtn');
+  
+  // Reset to default avatar
+  profileImage.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='1.5'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E";
+  removeBtn.style.display = 'none';
+  
+  // Clear file input
+  document.getElementById('imageInput').value = '';
+  
+  showNotification('Profile image removed', 'info');
+}
+
+// Account settings functions
+function changePassword() {
+  // In a real application, this would open a password change modal/page
+  showNotification('Password change functionality would be implemented here', 'info');
+}
+
+function exportData() {
+  // In a real application, this would export user data
+  const userData = {
+    name: document.getElementById('profileName').value,
+    email: document.getElementById('profileEmail').value,
+    age: document.getElementById('profileAge').value,
+    phone: document.getElementById('profilePhone').value,
+    city: document.getElementById('profileCity').value,
+    interests: document.getElementById('profileInterests').value,
+    savedColleges: loadSaved()
+  };
+  
+  const dataBlob = new Blob([JSON.stringify(userData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(dataBlob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'educompass-data.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  showNotification('Data exported successfully!', 'success');
+}
+
+function deleteAccount() {
+  if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+    if (confirm('This will permanently delete all your data. Are you absolutely sure?')) {
+      // In a real application, this would call an API to delete the account
+      showNotification('Account deletion would be processed here', 'error');
+    }
+  }
+}
+
+// Notification system
+function showNotification(message, type = 'info') {
+  // Remove existing notifications
+  const existingNotification = document.querySelector('.notification');
+  if (existingNotification) {
+    existingNotification.remove();
+  }
+  
+  const notification = document.createElement('div');
+  notification.className = `notification notification-${type}`;
+  notification.textContent = message;
+  
+  // Style the notification
+  notification.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 10000;
+    max-width: 300px;
+    word-wrap: break-word;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+  `;
+  
+  // Set background color based on type
+  switch (type) {
+    case 'success':
+      notification.style.background = '#28a745';
+      break;
+    case 'error':
+      notification.style.background = '#dc3545';
+      break;
+    case 'info':
+    default:
+      notification.style.background = '#004aad';
+      break;
+  }
+  
+  document.body.appendChild(notification);
+  
+  // Animate in
+  setTimeout(() => {
+    notification.style.transform = 'translateX(0)';
+  }, 100);
+  
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    notification.style.transform = 'translateX(100%)';
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.remove();
+      }
+    }, 300);
+  }, 3000);
+}
+
 

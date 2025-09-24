@@ -39,7 +39,104 @@
   </section>
   <section id="view-profile" aria-label="Profile" style="display:none">
     <h2 class="section-title">Profile</h2>
-    <p>Profile details will appear here.</p>
+    
+    <div class="profile-container">
+      <!-- Profile Image Section -->
+      <div class="profile-image-section">
+        <div class="profile-image-wrapper">
+          <img id="profileImage" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='1.5'%3E%3Cpath d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3C/svg%3E" alt="Profile Picture" class="profile-image">
+          <button class="image-upload-btn" onclick="document.getElementById('imageInput').click()" aria-label="Upload profile picture">
+            <span class="camera-icon">📷</span>
+          </button>
+        </div>
+        <input type="file" id="imageInput" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+        <button class="remove-image-btn" id="removeImageBtn" onclick="removeProfileImage()" style="display: none;">Remove Image</button>
+      </div>
+
+      <!-- Profile Information Form -->
+      <div class="profile-form-section">
+        <form id="profileForm" class="profile-form">
+          
+          <!-- Name Field -->
+          <div class="form-group">
+            <label for="profileName">Full Name</label>
+            <div class="input-with-edit">
+              <input type="text" id="profileName" name="name" value="John Doe" readonly>
+              <button type="button" class="edit-btn" onclick="toggleEdit('profileName')" aria-label="Edit name">
+                <span class="edit-icon">✏️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Email Field (Read-only) -->
+          <div class="form-group">
+            <label for="profileEmail">Email Address</label>
+            <input type="email" id="profileEmail" name="email" value="john.doe@example.com" readonly>
+            <small class="field-note">Email cannot be changed</small>
+          </div>
+
+          <!-- Age Field -->
+          <div class="form-group">
+            <label for="profileAge">Age</label>
+            <div class="input-with-edit">
+              <input type="number" id="profileAge" name="age" value="20" min="16" max="100" readonly>
+              <button type="button" class="edit-btn" onclick="toggleEdit('profileAge')" aria-label="Edit age">
+                <span class="edit-icon">✏️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Phone Number Field -->
+          <div class="form-group">
+            <label for="profilePhone">Phone Number</label>
+            <div class="input-with-edit">
+              <input type="tel" id="profilePhone" name="phone" value="+91 9876543210" readonly>
+              <button type="button" class="edit-btn" onclick="toggleEdit('profilePhone')" aria-label="Edit phone number">
+                <span class="edit-icon">✏️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- City Field -->
+          <div class="form-group">
+            <label for="profileCity">City</label>
+            <div class="input-with-edit">
+              <input type="text" id="profileCity" name="city" value="Mumbai" readonly>
+              <button type="button" class="edit-btn" onclick="toggleEdit('profileCity')" aria-label="Edit city">
+                <span class="edit-icon">✏️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Interests Field -->
+          <div class="form-group">
+            <label for="profileInterests">Academic Interests</label>
+            <div class="input-with-edit">
+              <input type="text" id="profileInterests" name="interests" value="Computer Science, Data Analytics" readonly>
+              <button type="button" class="edit-btn" onclick="toggleEdit('profileInterests')" aria-label="Edit interests">
+                <span class="edit-icon">✏️</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="profile-actions">
+            <button type="button" id="saveChanges" class="save-btn" onclick="saveProfileChanges()" style="display: none;">Save Changes</button>
+            <button type="button" id="cancelChanges" class="cancel-btn" onclick="cancelProfileEdit()" style="display: none;">Cancel</button>
+          </div>
+        </form>
+
+        <!-- Account Settings -->
+        <div class="account-settings">
+          <h3>Account Settings</h3>
+          <div class="settings-group">
+            <button class="settings-btn" onclick="changePassword()">Change Password</button>
+            <button class="settings-btn" onclick="exportData()">Export My Data</button>
+            <button class="settings-btn danger" onclick="deleteAccount()">Delete Account</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   <section id="view-settings" aria-label="Settings" style="display:none">
     <h2 class="section-title">Settings</h2>
