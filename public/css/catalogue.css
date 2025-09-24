@@ -15,6 +15,26 @@ main {
 /* Header menu toggle and nav */
 header {
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+}
+
+header h1 {
+  margin: 0;
+  text-align: center;
+  flex: 1;
+}
+
+header p {
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+  position: absolute;
+  bottom: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
 }
 
 .menu-toggle {
@@ -142,7 +162,7 @@ header {
   color: #004aad;
 }
 
-.save-btn {
+.college-card .save-btn {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -158,8 +178,8 @@ header {
   cursor: pointer;
 }
 
-.save-btn:hover { background: #e6eeff; }
-.save-btn.saved { background: #e8f5e9; color: #2e7d32; }
+.college-card .save-btn:hover { background: #e6eeff; }
+.college-card .save-btn.saved { background: #e8f5e9; color: #2e7d32; }
 
 .section-title { color: #004aad; margin: 0 0 0.5rem 0; }
 
@@ -469,7 +489,7 @@ header {
   justify-content: flex-end;
 }
 
-.save-btn {
+.profile-actions .save-btn {
   background: #28a745;
   color: white;
   border: none;
@@ -478,15 +498,25 @@ header {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: auto;
+  transform: none;
+  box-shadow: none;
 }
 
-.save-btn:hover {
+.profile-actions .save-btn:hover {
   background: #218838;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
 }
 
-.cancel-btn {
+.profile-actions .save-btn:focus {
+  background: #218838;
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+}
+
+.profile-actions .cancel-btn {
   background: #6c757d;
   color: white;
   border: none;
@@ -495,11 +525,22 @@ header {
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: auto;
+  transform: none;
+  box-shadow: none;
 }
 
-.cancel-btn:hover {
+.profile-actions .cancel-btn:hover {
   background: #5a6268;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.profile-actions .cancel-btn:focus {
+  background: #5a6268;
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
 }
 
 /* Account Settings */
@@ -551,6 +592,25 @@ header {
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+  header {
+    min-height: 70px;
+    padding: 0.75rem 1rem;
+  }
+  
+  header h1 {
+    font-size: 1.5rem;
+  }
+  
+  header p {
+    font-size: 0.9rem;
+    bottom: 0.25rem;
+  }
+  
+  .menu-toggle {
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+  
   .profile-container {
     grid-template-columns: 1fr;
     gap: 1rem;
