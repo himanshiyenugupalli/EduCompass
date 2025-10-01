@@ -303,6 +303,381 @@ header p {
   }
 }
 
+/* Settings Page Styles */
+.settings-container {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.settings-section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  padding: 1.5rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.settings-section:hover {
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.15);
+}
+
+.settings-section-title {
+  color: #004aad;
+  margin: 0 0 1.5rem 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f4ff;
+  padding-bottom: 0.5rem;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.setting-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.setting-item label {
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.setting-item input[type="text"],
+.setting-item select {
+  padding: 0.6rem 0.8rem;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.setting-item input[type="text"]:focus,
+.setting-item select:focus {
+  outline: none;
+  border-color: #004aad;
+  box-shadow: 0 0 0 3px rgba(0, 74, 173, 0.1);
+}
+
+.setting-description {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 0.25rem;
+}
+
+/* Toggle Switch Styles */
+.toggle-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.toggle-slider {
+  position: relative;
+  width: 50px;
+  height: 26px;
+  background: #ccc;
+  border-radius: 26px;
+  transition: background 0.3s ease;
+  flex-shrink: 0;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-label input[type="checkbox"] {
+  display: none;
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider {
+  background: #004aad;
+}
+
+.toggle-label input[type="checkbox"]:checked + .toggle-slider::before {
+  transform: translateX(24px);
+}
+
+/* Checkbox Group Styles */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.checkmark {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e1e5e9;
+  border-radius: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark {
+  background: #004aad;
+  border-color: #004aad;
+}
+
+.checkbox-label input[type="checkbox"]:checked + .checkmark::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Settings Action Buttons */
+.settings-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f0f4ff;
+}
+
+.settings-save-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
+}
+
+.settings-save-btn:hover {
+  background: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.4);
+}
+
+.settings-reset-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+}
+
+.settings-reset-btn:hover {
+  background: #5a6268;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(108, 117, 125, 0.4);
+}
+
+/* Settings Button in Groups */
+.settings-group .settings-btn {
+  background: #f8f9ff;
+  color: #004aad;
+  border: 2px solid #e1e5e9;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  font-size: 0.9rem;
+  max-width: 200px;
+}
+
+.settings-group .settings-btn:hover {
+  background: #e6eeff;
+  border-color: #004aad;
+  transform: translateY(-1px);
+}
+
+/* Mobile Responsiveness for Settings */
+@media (max-width: 768px) {
+  .settings-container {
+    gap: 1.5rem;
+  }
+  
+  .settings-section {
+    padding: 1rem;
+  }
+  
+  .settings-section-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .settings-group {
+    gap: 1rem;
+  }
+  
+  .checkbox-group {
+    gap: 0.5rem;
+  }
+  
+  .settings-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .settings-save-btn,
+  .settings-reset-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .toggle-label {
+    justify-content: space-between;
+  }
+  
+  .settings-group .settings-btn {
+    max-width: 100%;
+  }
+}
+
+/* Dark Mode Styles (when implemented) */
+.dark-mode .settings-section {
+  background: #2d3748;
+  color: white;
+}
+
+.dark-mode .settings-section-title {
+  color: #63b3ed;
+  border-bottom-color: #4a5568;
+}
+
+.dark-mode .setting-item label,
+.dark-mode .checkbox-label,
+.dark-mode .toggle-label {
+  color: #e2e8f0;
+}
+
+.dark-mode .setting-item input[type="text"],
+.dark-mode .setting-item select {
+  background: #4a5568;
+  border-color: #718096;
+  color: #e2e8f0;
+}
+
+.dark-mode .setting-item input[type="text"]:focus,
+.dark-mode .setting-item select:focus {
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.1);
+}
+
+.dark-mode .checkmark {
+  border-color: #718096;
+}
+
+.dark-mode .toggle-slider {
+  background: #718096;
+}
+
+.dark-mode .settings-group .settings-btn {
+  background: #4a5568;
+  color: #63b3ed;
+  border-color: #718096;
+}
+
+.dark-mode .settings-group .settings-btn:hover {
+  background: #2d3748;
+  border-color: #63b3ed;
+}
+
+/* Compact View Styles */
+.compact-view .college-card {
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.compact-view .college-name {
+  font-size: 1.1rem;
+  margin-bottom: 0.15rem;
+}
+
+.compact-view .college-info {
+  font-size: 0.8rem;
+  margin: 0.1rem 0;
+}
+
+.compact-view .courses-list {
+  font-size: 0.8rem;
+  margin: 0.25rem 0 0 0;
+  padding-left: 1rem;
+}
+
+.compact-view .college-card .save-btn {
+  width: 28px;
+  height: 28px;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 0.8rem;
+}
+
+/* Hide contact info when setting is disabled */
+.hide-contact .college-info:nth-of-type(2) {
+  display: none;
+}
+
+/* Results info styling */
+.results-info {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  background: #f8f9ff;
+  border-radius: 6px;
+  border: 1px solid #e1e5e9;
+}
+
 /* Profile Page Styles */
 .profile-container {
   max-width: 800px;

@@ -172,13 +172,13 @@ function filterColleges() {
     const matchesCourse = courseFilter === '' || college.courses.includes(courseFilter);
     return matchesName && matchesCity && matchesCourse;
   });
-  renderColleges(filtered);
+  renderCollegesWithSettings(filtered);
 }
 
 // Initialize app
 function initCatalogue() {
   populateCourseFilter();
-  renderColleges(colleges);
+  renderCollegesWithSettings(colleges);
 
   // Event listeners for search inputs
   searchNameEl.addEventListener('input', filterColleges);
@@ -222,6 +222,9 @@ function initCataloguePage() {
   initCatalogue();
   setupMenuToggle();
   setupViewRouting();
+  
+  // Apply settings on page load
+  applySettings();
 }
 
 // Run init on page load
@@ -261,6 +264,9 @@ function showView(view) {
   } else if (view === 'help') {
     // Initialize FAQ functionality when help view is shown
     setTimeout(setupFAQ, 50); // Small delay to ensure DOM is ready
+  } else if (view === 'settings') {
+    // Initialize settings functionality when settings view is shown
+    setTimeout(initializeSettings, 50); // Small delay to ensure DOM is ready
   }
 }
 
@@ -563,6 +569,303 @@ function showNotification(message, type = 'info') {
       }
     }, 300);
   }, 3000);
+}
+
+// Settings Management Functions
+const SETTINGS_KEY = 'educompass_settings';
+
+// Default settings
+const defaultSettings = {
+  defaultCity: '',
+  preferredCourses: ['IT', 'Management'],
+  resultsPerPage: 20,
+  darkMode: false,
+  compactView: false,
+  showContactInfo: true,
+  emailNotifications: true,
+  admissionReminders: true,
+  newCollegeAlerts: false,
+  dataSharing: false,
+  saveSearchHistory: true,
+  budgetRange: '',
+  collegeTypes: ['Private'],
+  studyMode: 'full-time'
+};
+
+// Load settings from localStorage
+function loadSettings() {
+  const raw = localStorage.getItem(SETTINGS_KEY);
+  return raw ? { ...defaultSettings, ...JSON.parse(raw) } : defaultSettings;
+}
+
+// Save settings to localStorage
+function saveSettingsData(settings) {
+  localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+}
+
+// Apply settings to the UI
+function applySettings() {
+  const settings = loadSettings();
+  
+  // Apply search preferences
+  const defaultCityEl = document.getElementById('defaultCity');
+  if (defaultCityEl) {
+    defaultCityEl.value = settings.defaultCity;
+    if (settings.defaultCity && searchCityEl) {
+      searchCityEl.value = settings.defaultCity;
+    }
+  }
+  
+  // Apply preferred courses
+  settings.preferredCourses.forEach(course => {
+    const checkbox = document.getElementById(`course${course.replace(/\s+/g, '')}`);
+    if (checkbox) checkbox.checked = true;
+  });
+  
+  // Apply other settings
+  const settingsMap = {
+    'resultsPerPage': settings.resultsPerPage,
+    'budgetRange': settings.budgetRange,
+    'studyMode': settings.studyMode
+  };
+  
+  Object.entries(settingsMap).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.value = value;
+  });
+  
+  // Apply toggle settings
+  const toggleSettings = {
+    'darkMode': settings.darkMode,
+    'compactView': settings.compactView,
+    'showContactInfo': settings.showContactInfo,
+    'emailNotifications': settings.emailNotifications,
+    'admissionReminders': settings.admissionReminders,
+    'newCollegeAlerts': settings.newCollegeAlerts,
+    'dataSharing': settings.dataSharing,
+    'saveSearchHistory': settings.saveSearchHistory
+  };
+  
+  Object.entries(toggleSettings).forEach(([id, value]) => {
+    const element = document.getElementById(id);
+    if (element) element.checked = value;
+  });
+  
+  // Apply college type preferences
+  settings.collegeTypes.forEach(type => {
+    const checkbox = document.getElementById(`type${type}`);
+    if (checkbox) checkbox.checked = true;
+  });
+  
+  // Apply dark mode if enabled
+  if (settings.darkMode) {
+    document.body.classList.add('dark-mode');
+  } else {
+    document.body.classList.remove('dark-mode');
+  }
+  
+  // Apply compact view if enabled
+  if (settings.compactView) {
+    document.body.classList.add('compact-view');
+  } else {
+    document.body.classList.remove('compact-view');
+  }
+}
+
+// Save all settings
+function saveSettings() {
+  const settings = {};
+  
+  // Collect input values
+  settings.defaultCity = document.getElementById('defaultCity')?.value || '';
+  settings.resultsPerPage = parseInt(document.getElementById('resultsPerPage')?.value || 20);
+  settings.budgetRange = document.getElementById('budgetRange')?.value || '';
+  settings.studyMode = document.getElementById('studyMode')?.value || 'full-time';
+  
+  // Collect toggle values
+  const toggleIds = ['darkMode', 'compactView', 'showContactInfo', 
+                    'emailNotifications', 'admissionReminders', 'newCollegeAlerts',
+                    'dataSharing', 'saveSearchHistory'];
+  
+  toggleIds.forEach(id => {
+    const element = document.getElementById(id);
+    settings[id] = element ? element.checked : false;
+  });
+  
+  // Collect preferred courses
+  settings.preferredCourses = [];
+  const courseIds = ['courseIT', 'courseManagement', 'courseCS', 'courseAnalytics'];
+  courseIds.forEach(id => {
+    const element = document.getElementById(id);
+    if (element && element.checked) {
+      settings.preferredCourses.push(element.value);
+    }
+  });
+  
+  // Collect college types
+  settings.collegeTypes = [];
+  const typeIds = ['typeGovernment', 'typePrivate', 'typeDeemed'];
+  typeIds.forEach(id => {
+    const element = document.getElementById(id);
+    if (element && element.checked) {
+      settings.collegeTypes.push(element.value);
+    }
+  });
+  
+  // Save to localStorage
+  saveSettingsData(settings);
+  
+  // Apply settings immediately
+  applySettings();
+  
+  showNotification('Settings saved successfully!', 'success');
+}
+
+// Reset settings to defaults
+function resetSettings() {
+  if (confirm('Are you sure you want to reset all settings to default values?')) {
+    localStorage.removeItem(SETTINGS_KEY);
+    applySettings();
+    showNotification('Settings reset to defaults', 'info');
+  }
+}
+
+// Clear search history
+function clearSearchHistory() {
+  if (confirm('Are you sure you want to clear your search history?')) {
+    // In a real app, this would clear stored search history
+    localStorage.removeItem('educompass_search_history');
+    showNotification('Search history cleared', 'info');
+  }
+}
+
+// Clear saved colleges
+function clearSavedColleges() {
+  if (confirm('Are you sure you want to remove all saved colleges?')) {
+    localStorage.removeItem(SAVED_KEY);
+    renderSaved(); // Refresh the saved list if currently viewing
+    showNotification('All saved colleges removed', 'info');
+  }
+}
+
+// Dark mode toggle handler
+function toggleDarkMode() {
+  const darkModeToggle = document.getElementById('darkMode');
+  if (darkModeToggle) {
+    if (darkModeToggle.checked) {
+      document.body.classList.add('dark-mode');
+    } else {
+      document.body.classList.remove('dark-mode');
+    }
+  }
+}
+
+// Compact view toggle handler
+function toggleCompactView() {
+  const compactViewToggle = document.getElementById('compactView');
+  if (compactViewToggle) {
+    if (compactViewToggle.checked) {
+      document.body.classList.add('compact-view');
+    } else {
+      document.body.classList.remove('compact-view');
+    }
+  }
+}
+
+// Contact info toggle handler
+function toggleContactInfo() {
+  const showContactToggle = document.getElementById('showContactInfo');
+  if (showContactToggle) {
+    if (showContactToggle.checked) {
+      document.body.classList.remove('hide-contact');
+    } else {
+      document.body.classList.add('hide-contact');
+    }
+  }
+}
+
+// Enhanced render function that respects settings
+function renderCollegesWithSettings(data) {
+  const settings = loadSettings();
+  
+  // Apply results per page limit
+  const limitedData = data.slice(0, settings.resultsPerPage);
+  
+  collegeListEl.innerHTML = '';
+  if (limitedData.length === 0) {
+    collegeListEl.innerHTML = '<li>No colleges found matching your criteria.</li>';
+    return;
+  }
+  
+  limitedData.forEach(college => {
+    const li = document.createElement('li');
+    li.className = 'college-card';
+    
+    const contactInfo = settings.showContactInfo 
+      ? `<p class="college-info"><strong>Contact:</strong> <a href="tel:${college.contact.replace(/\s+/g, '')}">${college.contact}</a></p>`
+      : '';
+    
+    li.innerHTML = `
+      <h2 class="college-name">${college.name}</h2>
+      <button class="save-btn" aria-label="Save ${college.name}" data-college="${college.name}">${isSaved(college.name) ? '✓' : '★'}</button>
+      <p class="college-info"><strong>City:</strong> ${college.city}</p>
+      ${contactInfo}
+      <p class="college-info"><strong>Courses Offered:</strong></p>
+      <ul class="courses-list">${college.courses.map(c => `<li>${c}</li>`).join('')}</ul>
+    `;
+    collegeListEl.appendChild(li);
+  });
+
+  // Attach save handlers
+  document.querySelectorAll('.save-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      const name = e.currentTarget.getAttribute('data-college');
+      toggleSave(name);
+      // Re-render to reflect state
+      filterColleges();
+    });
+  });
+  
+  // Show results count
+  if (data.length > settings.resultsPerPage) {
+    const countInfo = document.createElement('p');
+    countInfo.className = 'results-info';
+    countInfo.textContent = `Showing ${limitedData.length} of ${data.length} results`;
+    countInfo.style.cssText = 'text-align: center; color: #666; font-style: italic; margin: 1rem 0;';
+    collegeListEl.appendChild(countInfo);
+  }
+}
+
+// Initialize settings when settings view is shown
+function initializeSettings() {
+  applySettings();
+  
+  // Add event listeners for real-time changes
+  const darkModeToggle = document.getElementById('darkMode');
+  if (darkModeToggle) {
+    darkModeToggle.addEventListener('change', toggleDarkMode);
+  }
+  
+  const compactViewToggle = document.getElementById('compactView');
+  if (compactViewToggle) {
+    compactViewToggle.addEventListener('change', toggleCompactView);
+  }
+  
+  const contactInfoToggle = document.getElementById('showContactInfo');
+  if (contactInfoToggle) {
+    contactInfoToggle.addEventListener('change', toggleContactInfo);
+  }
+  
+  // Auto-save default city changes
+  const defaultCityEl = document.getElementById('defaultCity');
+  if (defaultCityEl) {
+    defaultCityEl.addEventListener('blur', function() {
+      if (searchCityEl && this.value) {
+        searchCityEl.value = this.value;
+        filterColleges();
+      }
+    });
+  }
 }
 
 

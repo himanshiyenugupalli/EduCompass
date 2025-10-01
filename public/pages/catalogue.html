@@ -140,7 +140,217 @@
   </section>
   <section id="view-settings" aria-label="Settings" style="display:none">
     <h2 class="section-title">Settings</h2>
-    <p>Settings will appear here.</p>
+    
+    <div class="settings-container">
+      <!-- Search & Filter Preferences -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">Search & Filter Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label for="defaultCity">Default Search City</label>
+            <input type="text" id="defaultCity" placeholder="Enter your preferred city" value="">
+            <small class="setting-description">Set a default city to automatically filter colleges</small>
+          </div>
+          
+          <div class="setting-item">
+            <label for="preferredCourses">Preferred Course Types</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="courseIT" value="IT" checked>
+                <span class="checkmark"></span>
+                Information Technology
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="courseManagement" value="Management" checked>
+                <span class="checkmark"></span>
+                Management
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="courseCS" value="Computer Science">
+                <span class="checkmark"></span>
+                Computer Science
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="courseAnalytics" value="Business Analytics">
+                <span class="checkmark"></span>
+                Business Analytics
+              </label>
+            </div>
+            <small class="setting-description">Select course types to prioritize in search results</small>
+          </div>
+          
+          <div class="setting-item">
+            <label for="resultsPerPage">Results Per Page</label>
+            <select id="resultsPerPage">
+              <option value="10">10 colleges</option>
+              <option value="20" selected>20 colleges</option>
+              <option value="50">50 colleges</option>
+              <option value="100">100 colleges</option>
+            </select>
+            <small class="setting-description">Number of colleges to display at once</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Display Preferences -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">Display Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="darkMode">
+              <span class="toggle-slider"></span>
+              Dark Mode
+            </label>
+            <small class="setting-description">Switch to dark theme for better viewing in low light</small>
+          </div>
+          
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="compactView">
+              <span class="toggle-slider"></span>
+              Compact View
+            </label>
+            <small class="setting-description">Show more colleges in less space</small>
+          </div>
+          
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="showContactInfo" checked>
+              <span class="toggle-slider"></span>
+              Show Contact Information
+            </label>
+            <small class="setting-description">Display phone numbers and contact details</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Preferences -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">Notification Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="emailNotifications" checked>
+              <span class="toggle-slider"></span>
+              Email Notifications
+            </label>
+            <small class="setting-description">Receive updates about new colleges and features</small>
+          </div>
+          
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="admissionReminders" checked>
+              <span class="toggle-slider"></span>
+              Admission Reminders
+            </label>
+            <small class="setting-description">Get notified about admission deadlines for saved colleges</small>
+          </div>
+          
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="newCollegeAlerts">
+              <span class="toggle-slider"></span>
+              New College Alerts
+            </label>
+            <small class="setting-description">Notify when new colleges are added in your preferred cities</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Privacy & Data -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">Privacy & Data</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="dataSharing">
+              <span class="toggle-slider"></span>
+              Allow Anonymous Data Sharing
+            </label>
+            <small class="setting-description">Help improve EduCompass by sharing anonymous usage data</small>
+          </div>
+          
+          <div class="setting-item">
+            <label class="toggle-label">
+              <input type="checkbox" id="saveSearchHistory" checked>
+              <span class="toggle-slider"></span>
+              Save Search History
+            </label>
+            <small class="setting-description">Keep track of your searches for better recommendations</small>
+          </div>
+          
+          <div class="setting-item">
+            <button class="settings-btn" onclick="clearSearchHistory()">Clear Search History</button>
+            <small class="setting-description">Remove all saved searches and preferences</small>
+          </div>
+          
+          <div class="setting-item">
+            <button class="settings-btn" onclick="clearSavedColleges()">Clear Saved Colleges</button>
+            <small class="setting-description">Remove all colleges from your saved list</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Academic Preferences -->
+      <div class="settings-section">
+        <h3 class="settings-section-title">Academic Preferences</h3>
+        <div class="settings-group">
+          <div class="setting-item">
+            <label for="budgetRange">Budget Range (Annual Fees)</label>
+            <select id="budgetRange">
+              <option value="">No preference</option>
+              <option value="0-100000">Under ₹1 Lakh</option>
+              <option value="100000-300000">₹1-3 Lakhs</option>
+              <option value="300000-500000">₹3-5 Lakhs</option>
+              <option value="500000-1000000">₹5-10 Lakhs</option>
+              <option value="1000000+">Above ₹10 Lakhs</option>
+            </select>
+            <small class="setting-description">Filter colleges based on your budget constraints</small>
+          </div>
+          
+          <div class="setting-item">
+            <label for="collegeType">Preferred College Type</label>
+            <div class="checkbox-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="typeGovernment" value="Government">
+                <span class="checkmark"></span>
+                Government Colleges
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="typePrivate" value="Private" checked>
+                <span class="checkmark"></span>
+                Private Colleges
+              </label>
+              <label class="checkbox-label">
+                <input type="checkbox" id="typeDeemed" value="Deemed">
+                <span class="checkmark"></span>
+                Deemed Universities
+              </label>
+            </div>
+            <small class="setting-description">Select types of institutions you're interested in</small>
+          </div>
+          
+          <div class="setting-item">
+            <label for="studyMode">Preferred Study Mode</label>
+            <select id="studyMode">
+              <option value="">No preference</option>
+              <option value="full-time" selected>Full-time</option>
+              <option value="part-time">Part-time</option>
+              <option value="online">Online</option>
+              <option value="hybrid">Hybrid</option>
+            </select>
+            <small class="setting-description">Choose your preferred mode of study</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="settings-actions">
+        <button class="settings-save-btn" onclick="saveSettings()">Save All Settings</button>
+        <button class="settings-reset-btn" onclick="resetSettings()">Reset to Defaults</button>
+      </div>
+    </div>
   </section>
   <section id="view-help" aria-label="Help" style="display:none">
     <h2 class="section-title">Help & FAQs</h2>
